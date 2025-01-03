@@ -18,7 +18,7 @@ def main():
                 detections[frame_id].append([x, y, x+w, y+h])
 
     # SORT 객체 생성
-    sort_tracker = Sort()
+    sort_tracker = Sort(max_age=4)
 
     # 각 프레임에 대해 처리
     for frame_id in sorted(detections.keys()):
