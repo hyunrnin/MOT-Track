@@ -1,22 +1,22 @@
 import cv2
 import numpy as np
 import os
-from deep_sort import preprocessing
-from deep_sort import nn_matching
+from deep_sort.application_util import preprocessing
+from deep_sort.deep_sort import nn_matching
 from deep_sort.deep_sort.detection import Detection
 from deep_sort.deep_sort.tracker import Tracker
-from tools import generate_detections as gdet
+from deep_sort.tools import generate_detections as gdet
 
 def main():
-    sequence_path = "./Venice-2/img1"
-    detection_file = "./Venice-2/det/det.txt"
+    sequence_path = "C:/Users/user/pj/dev-tracking/Venice-2/img1"
+    detection_file = "C:/Users/user/pj/dev-tracking/Venice-2/det/det.txt"
     
     # Initialize deep sort
     max_cosine_distance = 0.3
     nn_budget = None
     
     # Deep SORT 초기화
-    model_filename = 'mars-small128.pb'  # deep sort에서 제공하는 모델
+    model_filename = 'C:/Users/user/pj/dev-tracking/deep_sort/networks/mars-small128.pb'  # deep sort에서 제공하는 모델
     encoder = gdet.create_box_encoder(model_filename, batch_size=1)
     metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
     tracker = Tracker(metric)
