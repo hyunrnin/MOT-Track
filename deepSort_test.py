@@ -23,15 +23,19 @@ def main():
 
     # Load detections
     detections = {}
-    with open(detection_file, 'r') as f:
-        for line in f:
-            frame_id, _, x, y, w, h, conf, _, _, _ = map(float, line.strip().split(','))
-            frame_id = int(frame_id)
-            if conf > 0.3:  # confidence threshold
-                if frame_id not in detections:
-                    detections[frame_id] = []
-                detections[frame_id].append([x, y, x+w, y+h, conf])
-
+    try:
+        with open(detection_file, 'r') as f:
+            for line in f:
+                frame_id, _, x, y, w, h, conf, _, _, _ = map(float, line.strip().split(','))
+                frame_id = int(frame_id)
+                if conf > 0.3:  # confidence threshold
+                    if frame_id not in detections:
+                        detections[frame_id] = []
+                    detections[frame_id].append([x, y, x+w, y+h, conf])
+    except IOError as e:
+        print(f"detection 파일 읽기 오류: {"e"}")
+        return 
+    
     # Process each frame
     for frame_id in sorted(detections.keys()):
         # Load image
@@ -52,9 +56,10 @@ def main():
             
             # Run non-maxima suppression
             boxes = np.array([d.tlwh for d in detections_obj])
+            pick = [b for b in boxes]
             scores = np.array([d.confidence for d in detections_obj])
-            indices = preprocessing.non_max_suppression(boxes, 0.8, scores)
-            detections_obj = [detections_obj[i] for i in indices]
+            #indices = preprocessing.non_max_suppression(boxes, 1.0, scores)
+            #detections_obj = [detections_obj[i] for i in pick]
             
             # Update tracker
             tracker.predict()
