@@ -2,13 +2,9 @@ import cv2
 import numpy as np
 from deep_sort_realtime.deepsort_tracker import DeepSort
 import os
-import torch
 
 def main():
-    # CUDA 사용 가능 여부 확인
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    print(f"Using device: {device}")
-
+    # DeepSORT 트래커 초기화
     tracker = DeepSort(
         max_age=30,
         n_init=3,
@@ -17,9 +13,9 @@ def main():
         nn_budget=None,
         override_track_class=None,
         embedder="mobilenet",
-        half=True,  # FP16 사용으로 GPU 메모리 절약
+        half=True,
         bgr=True,
-        embedder_gpu=True,  # GPU 사용
+        embedder_gpu=True,
         embedder_model_name=None,
         embedder_wts=None,
         polygon=False,
@@ -30,6 +26,7 @@ def main():
     detection_file = "./Venice-2/det/det.txt"  # detection 결과 파일
     detections = {}
     
+    # detection_file에서 frame_id 별로 detection 결과를 읽어 detections에 저장
     with open(detection_file, 'r') as f:
         for line in f:
             frame_id, _, x, y, w, h, conf, _, _, _ = map(float, line.strip().split(','))
@@ -39,11 +36,6 @@ def main():
                     detections[frame_id] = []
                 detections[frame_id].append([x, y, x+w, y+h, conf])  # confidence 추가
 
-    # 비동기 처리를 위한 CUDA 스트림 생성
-    if torch.cuda.is_available():
-        stream = torch.cuda.Stream()
-        torch.cuda.synchronize()
-
     # 각 프레임에 대해 처리
     for frame_id in sorted(detections.keys()):
         # 이미지 로드
@@ -51,28 +43,15 @@ def main():
         frame = cv2.imread(img_path)
         
         if frame_id in detections:
-            # CUDA 사용 시 비동기 처리
-            if torch.cuda.is_available():
-                with torch.cuda.stream(stream):
-                    # DeepSORT 형식에 맞게 detection 데이터 변환
-                    detection_list = []
-                    for det in detections[frame_id]:
-                        x1, y1, x2, y2, conf = det
-                        # DeepSORT expects: [left,top,w,h,confidence]
-                        detection_list.append(([x1, y1, x2-x1, y2-y1], conf, None))
+            # DeepSORT 형식에 맞게 detection 데이터 변환
+            detection_list = []
+            for det in detections[frame_id]:
+                x1, y1, x2, y2, conf = det
+                # DeepSORT expects: [left,top,w,h,confidence]
+                detection_list.append(([x1, y1, x2-x1, y2-y1], conf, None))
 
-                    # 트래커 업데이트
-                    tracks = tracker.update_tracks(detection_list, frame=frame)
-            else:
-                # CPU 처리
-                detection_list = []
-                for det in detections[frame_id]:
-                    x1, y1, x2, y2, conf = det
-                    detection_list.append(([x1, y1, x2-x1, y2-y1], conf, None))
-                tracks = tracker.update_tracks(detection_list, frame=frame)
-            
-            if torch.cuda.is_available():
-                torch.cuda.synchronize()
+            # 트래커 업데이트
+            tracks = tracker.update_tracks(detection_list, frame=frame)
             
             # 결과 시각화
             for track in tracks:
@@ -103,9 +82,6 @@ def main():
             break
             
     cv2.destroyAllWindows()
-    
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
 
 if __name__ == "__main__":
     main()
