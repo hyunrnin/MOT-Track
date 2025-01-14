@@ -42,6 +42,10 @@ def main():
         print(f"detection 파일 읽기 오류: {"e"}")
         return 
     
+    if torch.cuda.is_available():
+        stream = torch.cuda.Stream()
+        torch.cuda.synchronize()
+
     # Process each frame
     for frame_id in sorted(detections.keys()):
         # 이미지 로드
@@ -73,23 +77,11 @@ def main():
                 torch.cuda.synchronize()
             
             # Score to bbox_score
-            detections_obj = [Detection(bbox, score, feature) for bbox, score, feature 
-                            in zip(boxes, scores, features)]
             
-            # Run non-maxima suppression
-            boxes = np.array([d.tlwh for d in detections_obj])
-            pick = [b for b in boxes]
-            scores = np.array([d.confidence for d in detections_obj])
-            #indices = preprocessing.non_max_suppression(boxes, 1.0, scores)
-            #detections_obj = [detections_obj[i] for i in pick]
-            
-            # Update tracker
-            tracker.predict()
-            tracker.update(detections_obj)
             
             # Draw results
-            for track in tracker.tracks:
-                if not track.is_confirmed() or track.time_since_update > 1:
+            for track in tracks:
+                if not track.is_confirmed():
                     continue
                 
                 track_id = track.track_id
