@@ -2,3 +2,7 @@ opencv-python
 numpy
 scipy
 filterpy
+deep_sort_realtime
+# torch는 gpu cuda 버전에 맞춰서 버전 변경해야 함
+torch
+torchvision
