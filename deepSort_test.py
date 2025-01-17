@@ -3,7 +3,7 @@ import numpy as np
 from deep_sort_realtime.deepsort_tracker import DeepSort
 import os
 import torch
-
+import module_test
 def main():
     # CUDA 사용 가능 여부 확인
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -30,14 +30,7 @@ def main():
     detection_file = "./Venice-2/det/det.txt"  # detection 결과 파일
     detections = {}
     try:
-        with open(detection_file, 'r') as f:
-            for line in f:
-                frame_id, _, x, y, w, h, conf, _, _, _ = map(float, line.strip().split(','))
-                frame_id = int(frame_id)
-                if conf > 0.3:  # confidence threshold
-                    if frame_id not in detections:
-                        detections[frame_id] = []
-                    detections[frame_id].append([x, y, x+w, y+h, conf])
+          detections = module_test.save_detection(detection_file, deepsort_ver=True)
     except IOError as e:
         print(f"detection 파일 읽기 오류: {"e"}")
         return 
@@ -80,27 +73,8 @@ def main():
             
             
             # Draw results
-            for track in tracks:
-                if not track.is_confirmed():
-                    continue
-                
-                track_id = track.track_id
-                ltrb = track.to_ltrb()
-                
-                # draw bounding box
-                cv2.rectangle(frame, 
-                            (int(ltrb[0]), int(ltrb[1])), 
-                            (int(ltrb[2]), int(ltrb[3])), 
-                            (0, 255, 0), 2)
-                
-                # put ID in the bounding box
-                cv2.putText(frame, 
-                           str(track_id),
-                           (int(ltrb[0]), int(ltrb[1])-10), 
-                           cv2.FONT_HERSHEY_SIMPLEX, 
-                           0.9, 
-                           (0, 255, 0), 
-                           2)
+            module_test.visualize_results(frame, tracks)   
+
 
         # 결과 표시
         cv2.imshow('DeepSORT Tracking', frame)

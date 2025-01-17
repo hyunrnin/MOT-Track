@@ -2,25 +2,21 @@ import cv2
 import numpy as np
 from sort import Sort
 import os
-
+import module_test
 def main():
 
+#-------------------------------------------------------------------------------
     sequence_path = "./Venice-2/img1" # 입력 비디오 파일 경로
     detection_file = "./Venice-2/det/det.txt" # detection 결과 파일
     detections = {}
     # detection_file에서 frame_id 별로 detection 결과를 읽어 detections에 저장
-    with open(detection_file, 'r') as f:
-        for line in f:
-            frame_id, _, x, y, w, h, conf, _, _, _ = map(float, line.strip().split(','))
-            frame_id = int(frame_id)
-            if conf > 0.3:  # confidence threshold
-                if frame_id not in detections:
-                    detections[frame_id] = []
-                detections[frame_id].append([x, y, x+w, y+h])
+    detections = module_test.save_detection(detection_file)
+#-------------------------------------------------------------------------------
 
     # SORT 객체 생성
     sort_tracker = Sort(max_age=4)
 
+#-------------------------------------------------------------------------------
     # 각 프레임에 대해 처리
     for frame_id in sorted(detections.keys()):
         # 이미지 로드
@@ -30,23 +26,12 @@ def main():
         # 트래커 업데이트
         trackers = sort_tracker.update(np.array(detections[frame_id]))
     
-        # 결과 시각화
-        for track in trackers:
-            track_id = track[4]
-            # draw bounding box
-            cv2.rectangle(frame, 
-                        (int(track[0]), int(track[1])), 
-                        (int(track[2]), int(track[3])), 
-                        (0, 255, 0), 2)
-            #  put ID in the bounding box
-            cv2.putText(frame, 
-                       str(track_id),
-                       (int(track[0]), int(track[1])-10), 
-                       cv2.FONT_HERSHEY_SIMPLEX, 
-                       0.9, 
-                       (0, 255, 0), 
-                       2)
 
+
+#-------------------------------------------------------------------------------
+        # 결과 시각화
+        module_test.visualize_results(frame, trackers)    
+#--------------------------------------------------------------------------------        
         # 결과 표시
         cv2.imshow('MOT Tracking', frame)
         if cv2.waitKey(30) & 0xFF == 27:  # ESC 키로 종료
@@ -54,5 +39,6 @@ def main():
             
     cv2.destroyAllWindows()
 
+#-------------------------------------------------------------------------------
 if __name__ == "__main__":
     main()
