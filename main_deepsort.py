@@ -3,8 +3,8 @@ import numpy as np
 from deep_sort_realtime.deepsort_tracker import DeepSort
 import os
 import torch
-import module_test
-import deepsort_module
+import util.module_result as module_result
+import util.deepsort_module as deepsort_module
 def main():
     # CUDA 사용 가능 여부 확인
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -14,7 +14,7 @@ def main():
     detection_file = "./Venice-2/det/det.txt"  # detection 결과 파일
     detections = {}
     try:
-          detections = module_test.save_detection(detection_file, deepsort_ver=True)
+          detections = module_result.save_detection(detection_file, deepsort_ver=True)
     except IOError as e:
         print(f"detection 파일 읽기 오류: {"e"}")
         return 

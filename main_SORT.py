@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
-from sort import Sort
+from dir_SORT.sort import Sort
 import os
-import module_test
+import util.module_result as module_result
 def main():
 
 #-------------------------------------------------------------------------------
@@ -10,7 +10,7 @@ def main():
     detection_file = "./Venice-2/det/det.txt" # detection 결과 파일
     detections = {}
     # detection_file에서 frame_id 별로 detection 결과를 읽어 detections에 저장
-    detections = module_test.save_detection(detection_file)
+    detections = module_result.save_detection(detection_file)
 #-------------------------------------------------------------------------------
 
     # SORT 객체 생성
@@ -22,15 +22,12 @@ def main():
         # 이미지 로드
         img_path = os.path.join(sequence_path, f"{frame_id:06d}.jpg")
         frame = cv2.imread(img_path)
-        
         # 트래커 업데이트
         trackers = sort_tracker.update(np.array(detections[frame_id]))
-    
-
 
 #-------------------------------------------------------------------------------
         # 결과 시각화
-        module_test.visualize_results(frame, trackers)    
+        module_result.visualize_results(frame, trackers)    
 #--------------------------------------------------------------------------------        
         # 결과 표시
         cv2.imshow('MOT Tracking', frame)

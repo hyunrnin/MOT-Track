@@ -2,7 +2,7 @@ from deep_sort_realtime.deepsort_tracker import DeepSort
 import cv2
 import os
 import torch
-import module_test
+import util.module_result as module_result
 
 @staticmethod
 def deepsort1(
@@ -67,6 +67,6 @@ def process_each_frame(detections, stream, frame_id, tracker, frame):
             # Score to bbox_score
             
            # Draw results
-            module_test.visualize_results(frame, tracks)   
+            module_result.visualize_results(frame, tracks)   
 
         # 결과 표시
