@@ -2,7 +2,7 @@ import cv2
 import os
 
 @staticmethod
-def save_detection(detection_file, deepsort_ver = False):
+def save_detection(detection_file, sort_ver = False):
     detections = {}
     # detection_file에서 frame_id 별로 detection 결과를 읽어 detections에 저장
     with open(detection_file, 'r') as f:
@@ -12,10 +12,12 @@ def save_detection(detection_file, deepsort_ver = False):
             if conf > 0.3:  # confidence threshold
                 if frame_id not in detections:
                     detections[frame_id] = []
-                if deepsort_ver: #deepsort의 경우 deepsort_ver=True가 되어 해당 코드 실행 
+                if sort_ver == 'deepsort': #deepsort의 경우 deepsort_ver=True가 되어 해당 코드 실행 
                     detections[frame_id].append([x, y, x+w, y+h, conf])
-                else:
+                elif sort_ver == 'sort':
                     detections[frame_id].append([x, y, x+w, y+h])
+                elif sort_ver == 'byte':
+                    detections[frame_id].append([x, y, x+w, y+h, conf])
     return detections
 
 @staticmethod

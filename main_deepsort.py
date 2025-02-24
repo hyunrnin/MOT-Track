@@ -14,7 +14,7 @@ def main():
     detection_file = "./Venice-2/det/det.txt"  # detection 결과 파일
     detections = {}
     try:
-          detections = module_result.save_detection(detection_file, deepsort_ver=True)
+          detections = module_result.save_detection(detection_file, sort_ver='deepsort')
     except IOError as e:
         print(f"detection 파일 읽기 오류: {"e"}")
         return 

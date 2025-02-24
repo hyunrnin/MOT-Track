@@ -10,7 +10,7 @@ def main():
     detection_file = "./Venice-2/det/det.txt" # detection 결과 파일
     detections = {}
     # detection_file에서 frame_id 별로 detection 결과를 읽어 detections에 저장
-    detections = module_result.save_detection(detection_file)
+    detections = module_result.save_detection(detection_file, sort_ver='sort')
 #-------------------------------------------------------------------------------
 
     # SORT 객체 생성
