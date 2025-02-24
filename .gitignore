@@ -1,5 +1,10 @@
 .venv
+__pycache__
 
-/__pycache__
+*.pyc
 *.npy
 det.npy
+/yolo_test
+/runs
+
+test_byte_track
