@@ -65,7 +65,7 @@ while cap.isOpened():
 
     # FPS 화면에 표시
     cv2.putText(frame, f"FPS: {fps:.2f}", (10, 30),
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
     # 결과 화면에 출력
     cv2.imshow('YOLO Real-Time Tracking', frame)
