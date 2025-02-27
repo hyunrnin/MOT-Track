@@ -47,6 +47,13 @@ pip install -e ./
 
 
 ## 사용 방법
+- 실행은 MOT16 dataset 중 Venice-2를 사용했습니다.
+- 다른 dataset으로 실행할 경우, 경로를 수정해주세요
+```python
+sequence_path = "./Venice-2/img1"  # 이미지 파일 디렉토리리
+detection_file = "./Venice-2/det/det.txt"  # detection 결과(.txt 파일) 디렉토리
+```
+
 ### SORT 트래커 실행
 `python main_SORT.py`
 
@@ -59,12 +66,22 @@ pip install -e ./
 ### YOLOv9 + ByteTrack을 사용한 실시간 웹캠 추적
 `python cam_tracker_with_fps.py`
 
+
 <br>
 
 
 ## 실행 결과
+'main_SORT'
+![sort-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/main_sort.png)
+
+'main_deepsort'
+![deepsort-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/main_deep2.png)
+
+'cam_tracker_with_fps'
+![cam-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/CAM.png)
+
 `main_byte`
-![tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/main_byte.png)
+![byte-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/main_byte.png)
 
 
 ## 파일 설명
