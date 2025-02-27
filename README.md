@@ -71,13 +71,13 @@ detection_file = "./Venice-2/det/det.txt"  # detection 결과(.txt 파일) 디�
 
 
 ## 실행 결과
-'main_SORT'
+`main_SORT`
 ![sort-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/main_sort.png)
 
-'main_deepsort'
+`main_deepsort`
 ![deepsort-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/main_deep2.png)
 
-'cam_tracker_with_fps'
+`cam_tracker_with_fps`
 ![cam-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/CAM.png)
 
 `main_byte`
