@@ -84,7 +84,7 @@ for frame_id in sorted(detections.keys()):
     img_path = os.path.join(sequence_path, f"{frame_id:06d}.jpg")
     frame = cv2.imread(img_path)
     process_each_frame(detections, frame_id, byte_tracker, frame)
-    cv2.imshow('DeepSORT Tracking', frame)
+    cv2.imshow('ByteTracking', frame)
     if cv2.waitKey(30) & 0xFF == 27:  # ESC 키로 종료
         break
 
