@@ -12,8 +12,8 @@
 - `SORT` : 칼만 필터와 헝가리안 알고리즘을 이용한 가벼운 실시간 객체 추적.
 - `DeepSORT` : Re-identification(재식별) 기능이 포함된 강화된 SORT.
 - `ByteTrack` : 낮은 신뢰도의 객체 검출을 추가로 사용하여 정확도를 높이는 강력한 추적 알고리즘.
-- `YOLOv9 기반 객체 탐지` : 카메라를 통한 실시간 객체 탐지를 위해 YOLOv9을 활용. 특정 클래스인 사람만을 탐지하도록 변
-- `시각화` : 바운딩 박스 및 추적 ID를 비디오 프레임에 표시.
+- `YOLOv9 기반 객체 탐지` : 카메라를 통한 실시간 객체 탐지를 위해 YOLOv9을 활용. 특정 클래스인 사람만을 탐지하도록 변경
+- `시각화` : Bounding Box와 Track ID를 비디오 프레임에 표시.
 - `FPS 계산` : 실시간 성능 분석을 위해 초당 프레임 수(FPS) 측정 및 표시.
 
 ## 설치 방법
@@ -85,11 +85,11 @@ detection_file = "./Venice-2/det/det.txt"  # detection 결과(.txt 파일) 디�
 
 
 ## 파일 설명
-- `main_SORT.py` - 칼만 필터 기반 SORT 추적 실행.
+- `main_SORT.py` - Kalman Filter와 hungarian algorithm 기반 SORT 추적 실행. occlusion을 막기 위해 max_age값을 4로 지정정
 - `main_deepsort.py` - Re-ID 기능을 갖춘 DeepSORT 추적 실행.
 - `main_byte.py` - ByteTrack 기반 객체 추적 실행.
 - `cam_tracker_with_fps.py` - YOLOv9과 ByteTrack을 활용한 실시간 웹캠 기반 객체 추적.
-- `util/module_result.py` - detection 결과를 읽고 track id와 bounding box를 시각화하는 모듈.
+- `util/module_result.py` - Detection 결과를 읽고 Track ID와 Bounding Box를 시각화하는 모듈.
 - `util/deepsort_module.py` - DeepSORT 실행을 위한 보조 모듈.
 - `for_Byte/` - ByteTrack 구현을 위한 디렉토리.
 - `dir_SORT/sort.py` - SORT 알고리즘 구현 파일.
@@ -98,6 +98,7 @@ detection_file = "./Venice-2/det/det.txt"  # detection 결과(.txt 파일) 디�
 - 입력 이미지 파일은 `./Venice-2/img1` 폴더에 있어야 합니다.
 - 다른 데이터셋을 사용할 경우 스크립트 내 경로를 수정하세요.
 - 실시간 webcam 추적 사용시 기기에 카메라가 연결되어 있어야 합니다.
+
 
 
 ## 참고 및 출처
