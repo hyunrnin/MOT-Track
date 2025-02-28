@@ -71,16 +71,16 @@ detection_file = "./Venice-2/det/det.txt"  # detection 결과(.txt 파일) 디�
 
 
 ## 실행 결과
-`main_SORT`
+`main_SORT` 
 ![sort-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/main_sort.png)
 
-`main_deepsort`
+`main_deepsort` 
 ![deepsort-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/main_deep2.png)
 
-`cam_tracker_with_fps`
+`cam_tracker_with_fps` 
 ![cam-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/CAM.png)
 
-`main_byte`
+`main_byte` 
 ![byte-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/main_byte.png)
 
 
@@ -89,7 +89,7 @@ detection_file = "./Venice-2/det/det.txt"  # detection 결과(.txt 파일) 디�
 - `main_deepsort.py` - Re-ID 기능을 갖춘 DeepSORT 추적 실행.
 - `main_byte.py` - ByteTrack 기반 객체 추적 실행.
 - `cam_tracker_with_fps.py` - YOLOv9과 ByteTrack을 활용한 실시간 웹캠 기반 객체 추적.
-- `util/module_result.py` - 검출 데이터를 읽고 시각화하는 유틸리티 함수.
+- `util/module_result.py` - detection 결과를 읽고 track id와 bounding box를 시각화하는 모듈.
 - `util/deepsort_module.py` - DeepSORT 실행을 위한 보조 모듈.
 - `for_Byte/` - ByteTrack 구현을 위한 디렉토리.
 - `dir_SORT/sort.py` - SORT 알고리즘 구현 파일.
