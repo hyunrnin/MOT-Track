@@ -1,113 +1,116 @@
-# dev-tracking 
-# SORT, DeepSORT 및 ByteTrack을 활용한 다중 객체 추적
+# 🤖 MOT-Track (SORT + DeepSORT + ByteTrack)
 
-## 개요
-이 프로젝트는 SORT(Simple Online and Realtime Tracker), DeepSORT 및 ByteTrack을 사용하여 다중 객체 추적(MOT)을 수행하는 코드입니다. 비디오를 프레임 단위로 처리하여 객체를 탐지하고 추적하는 기능을 제공합니다.
+SORT, DeepSORT, ByteTrack을 활용한 간편하고 효율적인 다중 객체 추적(MOT) 프로젝트입니다. YOLOv9 기반의 객체 탐지 모델과 결합하여 실시간 객체 탐지 및 추적 기능을 제공합니다.
 
-## 프로젝트 참여 멤버
-- 김현민 
-- 안우혁
+---
 
-## 기능
-- `SORT` : 칼만 필터와 헝가리안 알고리즘을 이용한 가벼운 실시간 객체 추적.
-- `DeepSORT` : Featrue Vector를 이용한 Re-identification(재식별) 기능이 포함된 강화된 SORT.
-- `ByteTrack` : 낮은 신뢰도의 객체 검출을 추가로 사용하여 정확도를 높이는 강력한 추적 알고리즘.
-- `YOLOv9 기반 객체 탐지` : 카메라를 통한 실시간 객체 탐지를 위해 YOLOv9을 활용. 특정 클래스(0)인 사람만을 탐지하도록 변경
-- `시각화` : Bounding Box와 Track ID를 비디오 프레임에 표시.
-- `FPS 계산` : 실시간 성능 분석을 위해 초당 프레임 수(FPS) 측정 및 실행 화면에 표시.
+## 👤 MADE BY
 
-## 설치 방법
-### 필수 조건
-Python 3.8 이상이 필요하며, 아래 명령어를 통해 필요한 패키지를 설치할 수 있습니다.
+- **김현민** ([hyunrnin](https://github.com/minn951120))
+- **안우혁** ([dngur24](https://github.com/dngur24))
+
+---
+
+## ✅ 주요 기능
+
+- **SORT(Simple Online and Realtime Tracker)**: Kalman Filter 및 헝가리안 알고리즘 기반의 실시간 객체 추적
+- **DeepSORT**: Feature Vector를 활용한 객체 재식별(Re-ID) 기능을 포함한 강화된 SORT
+- **ByteTrack**: 낮은 신뢰도 객체까지 활용해 정확도를 높이는 최신 객체 추적 알고리즘
+- **YOLOv9 객체 탐지**: 실시간 웹캠 기반 탐지 기능 지원 (특정 클래스(사람) 탐지로 최적화)
+- **시각화**: Bounding Box와 객체별 Track ID를 비디오 프레임에 표시
+- **FPS 측정**: 실시간 성능 분석을 위한 초당 프레임 수(FPS) 측정 및 시각화
+
+---
+
+## 📦 설치 방법
+
+### 필수 환경
+- Python 3.8 이상
 
 ```bash
 pip install -r requirements.txt
 ```
 
 ### 추가 라이브러리 설치
-아래의 명령어를 실행하여 필요한 패키지를 설치하세요.
 
-DeepSORT을 사용하려면 다음을 설치하세요.
+**DeepSORT 사용 시:**
 ```bash
 pip install deep_sort_realtime
 ```
 
-webcam을 이용한 BYTETrack을 사용할 경우 하단에 제시된 명령어를 통해 ultralytics를 설치하십시오. ultralytics에 내장된 YOLOv9을 통해 detect를 진행합니다.
+**웹캠 기반 ByteTrack (YOLOv9) 사용 시:**
 ```bash
 pip install opencv-python numpy torch torchvision ultralytics
 ```
 
-ByteTrack을 실행하려면 아래 패키지가 필요합니다.
-
+**ByteTrack 실행 시:**
 ```bash
-pip install cython 
+pip install cython
 
 git clone https://github.com/samson-wang/cython_bbox
 cd cython_bbox
 pip install -e ./
 ```
 
+---
 
-## 사용 방법
-- 실행은 MOT16 dataset 중 Venice-2를 사용했습니다.
-- 다른 dataset으로 실행할 경우, 경로를 수정해주세요
+## ▶️ 실행 방법
+
+기본적으로 MOT16의 `Venice-2` 데이터셋을 사용하며, 다른 데이터셋 사용 시 경로를 수정하세요.
+
 ```python
-sequence_path = "./Venice-2/img1"  # 이미지 파일 디렉토리리
-detection_file = "./Venice-2/det/det.txt"  # detection 결과(.txt 파일) 디렉토리
+sequence_path = "./Venice-2/img1"
+detection_file = "./Venice-2/det/det.txt"
 ```
 
-### SORT 트래커 실행
-`python main_SORT.py`
+**SORT 실행:**
+```bash
+python main_SORT.py
+```
 
-### DeepSORT 트래커 실행
-`python main_deepsort.py`
+**DeepSORT 실행:**
+```bash
+python main_deepsort.py
+```
 
-### ByteTrack 실행
-`python main_byte.py`
+**ByteTrack 실행:**
+```bash
+python main_byte.py
+```
 
-### YOLOv9 + ByteTrack을 사용한 실시간 웹캠 추적
-`python cam_tracker_with_fps.py`
+**YOLOv9 + ByteTrack 실시간 웹캠 실행:**
+```bash
+python cam_tracker_with_fps.py
+```
 
+---
 
-<br>
+## 📂 프로젝트 구조
 
+- `main_SORT.py`: SORT 추적 실행 (max_age=4 설정)
+- `main_deepsort.py`: DeepSORT 추적 실행
+- `main_byte.py`: ByteTrack 객체 추적 실행
+- `cam_tracker_with_fps.py`: YOLOv9+ByteTrack 웹캠 실시간 추적
+- `util/module_result.py`: 결과 시각화 모듈
+- `util/deepsort_module.py`: DeepSORT 지원 모듈
+- `for_Byte/`: ByteTrack 관련 코드
+- `dir_SORT/sort.py`: SORT 알고리즘 구현
 
-## 실행 결과
-`main_SORT` 
-![sort-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/main_sort.png)
+---
 
-`main_deepsort` 
-![deepsort-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/main_deep2.png)
+## ⚠️ 주의 사항
 
-`cam_tracker_with_fps` 
-![cam-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/CAM.png)
-
-`main_byte` 
-![byte-tracking result](https://github.com/SKHU-AI-2024-WINTER/dev-tracking/blob/MOT-Challenge/tracker%20result/main_byte.png)
-
-
-## 파일 설명
-- `main_SORT.py` - Kalman Filter와 hungarian algorithm 기반 SORT 추적 실행.occlusion으로 인한 ID switch를 막기 위해 max_age값을 4로 지정
-- `main_deepsort.py` - Re-ID 기능을 갖춘 DeepSORT 추적 실행.
-- `main_byte.py` - ByteTrack 기반 객체 추적 실행.
-- `cam_tracker_with_fps.py` - YOLOv9과 ByteTrack을 활용한 실시간 웹캠 기반 객체 추적.
-- `util/module_result.py` - Detection 결과를 읽고 Track ID와 Bounding Box를 시각화하는 모듈.
-- `util/deepsort_module.py` - DeepSORT 실행을 위한 보조 모듈.
-- `for_Byte/` - ByteTrack 구현을 위한 디렉토리.
-- `dir_SORT/sort.py` - SORT 알고리즘 구현 파일.
-
-<br>
-
-
-## 참고 사항
 - 입력 이미지 파일은 `./Venice-2/img1` 폴더에 있습니다.
 - 다른 데이터셋을 사용할 경우 스크립트 내 경로를 수정하세요.
-- 실시간 webcam 추적 사용시 기기에 카메라가 연결되어 있어야 합니다.
+- 실시간 webcam 추적 사용 시 기기에 카메라가 연결되어 있어야 합니다.
 
+---
 
+## 🧠 라이선스 & 출처
 
-## 참고 및 출처
-- YOLOv9 - [Ultralytics](https://github.com/ultralytics)
-- SORT - [SORT 공식 GitHub](https://github.com/abewley/sort)
-- DeepSORT - [DeepSORT 구현](https://github.com/nwojke/deep_sort)
-- ByteTrack - [ByteTrack 공식 GitHub](https://github.com/ifzhang/ByteTrack)
+- [YOLOv9 (Ultralytics)](https://github.com/ultralytics)
+- [SORT 공식 GitHub](https://github.com/abewley/sort)
+- [DeepSORT 구현](https://github.com/nwojke/deep_sort)
+- [ByteTrack 공식 GitHub](https://github.com/ifzhang/ByteTrack)
+
+---
