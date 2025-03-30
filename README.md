@@ -6,8 +6,8 @@ SORT, DeepSORT, ByteTrack을 활용한 간편하고 효율적인 다중 객체 �
 
 ## 👤 MADE BY
 
-- **김현민** ([hyunrnin](https://github.com/minn951120))
-- **안우혁** ([dngur24](https://github.com/dngur24))
+- **김현민** ( [hyunrnin](https://github.com/minn951120) )
+- **안우혁** ( [dngur24](https://github.com/dngur24) )
 
 ---
 
