@@ -8,12 +8,12 @@ def process_each_frame(detections, frame_id, byte_tracker, frame):
     if frame_id in detections:
         detection_list = np.array(detections[frame_id])
     else:
-        detection_list = np.array([])  # ✅ detection이 없으면 빈 배열 반환
+        detection_list = np.array([])  # detection이 없으면 빈 배열 반환
 
     # BYTETracker 업데이트
     tracks, bbox_list = byte_tracker.update(detection_list, frame)
 
-    # ✅ bbox_list가 None이거나 비어 있으면 기본값 할당
+    # bbox_list가 None이거나 비어 있으면 기본값 할당
     bbox_list = bbox_list if bbox_list is not None else []
 
     # 시각화
