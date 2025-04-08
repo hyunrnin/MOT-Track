@@ -1,22 +1,19 @@
 import os
 import cv2
 import numpy as np
-from for_Byte.byte_tracker import BYTETracker  # ByteTrack 모듈 (설치 필요)
-import util.module_result as module_result  # 시각화 함수
+from for_Byte.byte_tracker import BYTETracker
+import util.module_result as module_result
 #gpt version
 def process_each_frame(detections, frame_id, byte_tracker, frame):
     if frame_id in detections:
         detection_list = np.array(detections[frame_id])
     else:
-        detection_list = np.array([])  # detection이 없으면 빈 배열 반환
+        detection_list = np.array([])
 
-    # BYTETracker 업데이트
     tracks, bbox_list = byte_tracker.update(detection_list, frame)
 
-    # bbox_list가 None이거나 비어 있으면 기본값 할당
     bbox_list = bbox_list if bbox_list is not None else []
 
-    # 시각화
     visualize_results1(frame, tracks, bbox_list)
 
 
@@ -48,15 +45,13 @@ def process_each_frame(detections, frame_id, byte_tracker, frame):
 def visualize_results1(frame, tracks, bbox_list):
     for track, bbox in zip(tracks, bbox_list):
         track_id = track.track_id
-        color = (0, 255, 0)  # 초록색
+        color = (0, 255, 0)
 
-        # 바운딩 박스 그리기
         cv2.rectangle(frame, 
                       (int(bbox[0]), int(bbox[1])), 
                       (int(bbox[2]), int(bbox[3])), 
                       color, 2)
 
-        # 트래킹 ID 표시
         cv2.putText(frame, f"ID: {track_id}", 
                     (int(bbox[0]), int(bbox[1]) - 10), 
                     cv2.FONT_HERSHEY_SIMPLEX, 0.75, 
@@ -64,28 +59,22 @@ def visualize_results1(frame, tracks, bbox_list):
 
     return frame
 
-
-
-
-# === 데이터 로드 ===
-sequence_path = "./Venice-2/img1"  # 이미지 파일이 있는 폴더
-detection_file = "./Venice-2/det/det.txt"  # detection 결과(.txt 파일)가 있는 폴더
+sequence_path = "./Venice-2/img1"
+detection_file = "./Venice-2/det/det.txt"
 detections = []
 
 detections = module_result.save_detection(detection_file, sort_ver='byte')
 
-image_files = sorted(os.listdir(sequence_path))  # 이미지 파일 리스트 정렬
-# === ByteTrack 설정 ===
+image_files = sorted(os.listdir(sequence_path))
+
 byte_tracker = BYTETracker(args={'track_thresh': 0.5, 'match_thresh': 0.8, 'track_buffer': 30, 'mot20': None})
 
-
 for frame_id in sorted(detections.keys()):
-    # 이미지 로드
     img_path = os.path.join(sequence_path, f"{frame_id:06d}.jpg")
     frame = cv2.imread(img_path)
     process_each_frame(detections, frame_id, byte_tracker, frame)
     cv2.imshow('ByteTracking', frame)
-    if cv2.waitKey(30) & 0xFF == 27:  # ESC 키로 종료
+    if cv2.waitKey(30) & 0xFF == 27:
         break
 
 
@@ -127,7 +116,3 @@ for img_file, det_file in zip(image_files, detections):
 
 cv2.destroyAllWindows()
 """
-
-
-
-        # 결과 표시
